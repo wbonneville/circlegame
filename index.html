@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Blue Circle Simulator</title>
+<script type="text/javascript" src="paper-full.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.js"></script>
+<link rel="stylesheet" type="text/css" href="redbox.css">
+
+<script type="text/paperscript" canvas="myCanvas">
+
+    var myPath;
+    var currentCircle;
+    var circleStyle = {
+        strokeColor: '#9e5dc0',
+	    fillColor: '#c27fe6',
+	    strokeWidth: 5
+    }
+    
+    var currentStyle = {
+	    fillColor: '#c27fe6',
+    }
+
+
+
+    function onMouseDown(event) {
+       currentCircle = event.item
+        if (event.item) {
+            return;
+        }
+
+
+        var myCircle = new Path.Circle({
+            center: event.point,
+            radius: 15
+        });
+        myCircle.style = circleStyle;
+
+        
+    }
+
+
+    function onMouseDrag(event) {
+        console.log(event.delta);
+        if (currentCircle) {
+            currentCircle.position += event.delta;
+            currentCircle.style = currentStyle;
+        }
+
+    }
+  
+    var randomCircle = new Path.Circle({
+        point: view.center,
+        justification: 'center',
+        radius: 20,
+        
+    });
+
+    var randomCircleTwo = new Path.Circle({
+        point: view.center,
+        justification: 'center',
+        radius: 25,
+        
+    });
+
+    randomCircle.style = circleStyle;
+    var destination = Point.random() * view.size;
+
+    randomCircleTwo.style = circleStyle;
+    var destinationTwo = Point.random() * view.size;
+    
+    function onFrame(event) {
+     
+        var vector = destination - randomCircle.position;
+        
+        randomCircle.position += vector / 5;
+        
+        if (vector.length < 5) {
+            destination = Point.random() * view.size;
+        }
+
+        var vector = destinationTwo - randomCircleTwo.position;
+        
+        randomCircleTwo.position += vector / 15;
+        
+        if (vector.length < 5) {
+            destinationTwo = Point.random() * view.size;
+        }
+        
+    }
+
+    
+
+
+    
+    
+    
+</script>
+</head>
+<body>
+<canvas id="myCanvas" resize></canvas>
+</body>
+</html>
